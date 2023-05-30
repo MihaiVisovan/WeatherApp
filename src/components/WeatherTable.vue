@@ -1,79 +1,70 @@
 <template>
-  <table class="weather-table">
-    <thead>
-      <tr>
-        <th>Latitude</th>
-        <th>Longitude</th>
-        <th>Temperature</th>
-        <th>Wind</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(data, index) in weatherData" :key="index">
-        <th>
-          {{ data.latitude }}
-        </th>
-        <th>
-          {{ data.longitude }}
-        </th>
-        <th>
-          {{ data.current_weather.temperature }}
-        </th>
-        <th>
-          {{ data.current_weather.windspeed }}
-        </th>
-      </tr>
-    </tbody>
-  </table>
+  <div class="weather-tables">
+    <div class="weather-table">
+      Temperature:
+      {{ weatherData[0]?.current_weather?.temperature }} C
+    </div>
+    <div class="weather-table">
+      Wind speed:
+      {{ weatherData[0]?.current_weather?.windspeed }}
+    </div>
+    <div class="weather-table">
+      Wind direction :
+      {{ weatherData[0]?.current_weather?.winddirection }}
+    </div>
+  </div>
 </template>
 
 <script>
-import cities from './../static/cities.json';
-
 export default {
   name: 'WeatherTable',
   data() {
     return {
       weatherData: [],
       imagePath: '',
+      lat: this.$route.query.lat,
+      lon: this.$route.query.lon,
     };
   },
   async created() {
     await this.getWeatherData();
-    this.imagePath = 'src/assets/images/new_york.jpg';
   },
   methods: {
     async getWeatherData() {
-      cities.forEach(async location => {
-        await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${location.lat}&longitude=${location.lon}&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m`
-        )
-          .then(response => response.json())
-          .then(data => this.weatherData.push(data));
-      });
-
-      document.getElementsByTagName(
-        'body'
-      )[0].style.backgroundImage = `src/assets/images/${this.imagePath}.jpg`;
+      await fetch(
+        `https://api.open-meteo.com/v1/forecast?latitude=${this.lat}&longitude=${this.lon}&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m`
+      )
+        .then(response => response.json())
+        .then(data => this.weatherData.push(data));
+      console.log(this.weatherData[0]);
     },
   },
 };
 </script>
 
 <style scoped>
-.weather-table {
+.weather-tables {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
   width: 100%;
+  gap: 50px;
+  padding-bottom: 200px;
 }
 
-th {
-  background-color: hsla(204, 9%, 89%, 0.5);
-  height: 100px;
-  font-size: 50px;
-}
-
-tr {
-  font-size: 50px;
-  background-color: rgb(244, 244, 244, 0.5);
-  text-align: center;
+.weather-table {
+  width: 400px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+  color: black;
+  font-size: 25px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 8px 3px lightgrey;
 }
 </style>

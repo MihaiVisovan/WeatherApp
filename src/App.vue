@@ -1,17 +1,13 @@
 <template>
-  <div>
-    <img src="" />
-    <WeatherTable />
-  </div>
+  <div class="title">Weather App</div>
+  <router-view> </router-view>
 </template>
 
-<script>
-import WeatherTable from "./components/WeatherTable.vue";
-export default {
-  components: {
-    WeatherTable,
-  },
-};
-</script>
-
-<style scoped></style>
+<style scoped>
+.title {
+  display: flex;
+  justify-content: center;
+  font-size: 80px;
+  color: white;
+}
+</style>

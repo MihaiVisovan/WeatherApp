@@ -1,5 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather&family=Roboto:ital,wght@1,300;1,500&display=swap');
+
 body {
   background-image: url("./assets/Thunder.jpg");
   background-repeat: no-repeat;
   background-size: cover;
+  height: 100vh;
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+  font-family: 'Merriweather', serif;
+}
+
+#app {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
