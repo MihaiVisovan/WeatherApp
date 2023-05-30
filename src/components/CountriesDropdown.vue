@@ -9,8 +9,14 @@
         v-model="selectedCountry"
       >
       </v-autocomplete>
+      <v-progress-circular
+        color="white"
+        indeterminate
+        model-value="20"
+        v-if="selectedCountry && !cities.length"
+      ></v-progress-circular>
       <v-autocomplete
-        v-if="cities.length"
+        v-else-if="cities.length"
         label="Select a city"
         :items="cities"
         variant="underlined"
@@ -43,8 +49,9 @@ export default {
     },
   },
   watch: {
-    selectedCountry(newVal) {
-      if (newVal) this.getCities();
+    async selectedCountry(newVal) {
+      this.cities = [];
+      if (newVal) await this.getCities();
     },
     async selectedCity(newVal) {
       const { lat, lon } = await this.getCoordinates();
